@@ -32,10 +32,14 @@ pipeline {
             }
         }
 
-        stage('Check Build Output') {
+        stage('Prepare App Jar') {
             steps {
-                echo '빌드 결과물을 확인합니다.'
-                sh 'ls -al build/libs'
+                echo '실행용 JAR를 app.jar로 준비합니다.'
+                sh '''
+                    JAR_FILE=$(find build/libs -name "*.jar" ! -name "*plain.jar" | head -n 1)
+                    cp "$JAR_FILE" app.jar
+                    ls -al app.jar
+                '''
             }
         }
 
